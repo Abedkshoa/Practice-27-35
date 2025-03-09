@@ -1,0 +1,34 @@
+# introduction_to_users_27
+1 - whoami
+2 - who
+3 - w
+4 - id
+5 - su tania
+    id
+    exit
+6 - su - tania
+    pwd
+    logout
+7 - useradd mick
+    /usr/bin/useradd mick
+8 - sudo /usr/bin/useradd mick
+
+# user_management_28
+1 - useradd -m -c 'Serena Williams' serena
+2 -  useradd -m -c "Venus Williams" -s /bin/bash venus
+3 - tail -2 /etc/passwd
+    tail -2 /etc/shadow
+    tail -2 /etc/group
+4 - ls -lrt /home | tail -2
+5 - useradd -s /bin/date einstime
+7 - su - einstime
+8 -  echo Hello > /etc/skel/welcome.txt
+9 - useradd -m test
+    ls -l /home/test
+    userdel -r test
+10 - grep serena /etc/passwd
+     usermod -s /bin/bash serena
+     grep serena /etc/passwd
+
+# user_passwords_29
+1- passwd serena
