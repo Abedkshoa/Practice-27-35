@@ -1,34 +1,169 @@
 # introduction_to_users_27
-1 - whoami
-2 - who
-3 - w
-4 - id
-5 - su tania
+1- whoami
+2- who
+3- w
+4- id
+5- su tania
     id
     exit
-6 - su - tania
+6- su - tania
     pwd
     logout
-7 - useradd mick
+7- useradd mick
     /usr/bin/useradd mick
-8 - sudo /usr/bin/useradd mick
+8- sudo /usr/bin/useradd mick
 
 # user_management_28
-1 - useradd -m -c 'Serena Williams' serena
-2 -  useradd -m -c "Venus Williams" -s /bin/bash venus
-3 - tail -2 /etc/passwd
+1- useradd -m -c 'Serena Williams' serena
+2-  useradd -m -c "Venus Williams" -s /bin/bash venus
+3- tail -2 /etc/passwd
     tail -2 /etc/shadow
     tail -2 /etc/group
-4 - ls -lrt /home | tail -2
-5 - useradd -s /bin/date einstime
-7 - su - einstime
-8 -  echo Hello > /etc/skel/welcome.txt
-9 - useradd -m test
+4- ls -lrt /home | tail -2
+5- useradd -s /bin/date einstime
+7- su - einstime
+8-  echo Hello > /etc/skel/welcome.txt
+9- useradd -m test
     ls -l /home/test
     userdel -r test
-10 - grep serena /etc/passwd
+10- grep serena /etc/passwd
      usermod -s /bin/bash serena
      grep serena /etc/passwd
 
 # user_passwords_29
 1- passwd serena
+2- passwd venus
+   grep venus /etc/shadow | cut -c1-70
+   usermod -L venus
+   grep venus /etc/shadow | cut -c1-70
+3- grep serena /etc/shadow | cut -c1-70
+   passwd -d serena
+   grep serena /etc/shadow
+6- chage -M 10 serena
+7- vi /etc/login.defs (and change PASS_MAX_DAYS to 10)
+10- chsh -l
+11- -d
+12- grep serena /etc/shadow
+    passwd -S serena
+
+# user_profiles_30
+1_2_3- 
+    ls -a ~ ; ls -l /etc/pro* /etc/bash*
+    cat ~/.bashrc
+    cat ~/.profile
+    cat /etc/profile
+    cat /etc/bash.bashrc
+    export BASHRC_VAR="BashRC Loaded"
+    alias ll='ls -lah'
+    my_bashrc_func() { echo "Function from .bashrc"; }
+    export PROFILE_VAR="Profile Loaded"
+    alias gs='git status'
+    my_profile_func() { echo "Function from .profile"; }
+    export PROFILE_SYSTEM_VAR="System Profile Loaded"
+    alias sysinfo='uname -a'
+    my_system_profile_func() { echo "Function from /etc/profile"; }
+    export BASHRC_SYSTEM_VAR="System BashRC Loaded"
+    alias update='sudo apt update && sudo apt upgrade'
+    my_system_bashrc_func() { echo "Function from /etc/bash.bashrc"; }
+    source ~/.bashrc
+    source ~/.profile
+    source /etc/profile
+    source /etc/bash.bashrc
+    echo $BASHRC_VAR $PROFILE_VAR $PROFILE_SYSTEM_VAR $BASHRC_SYSTEM_VAR
+    ll
+    gs
+    sysinfo
+    update
+    my_bashrc_func
+    my_profile_func
+    my_system_profile_func
+    my_system_bashrc_func
+4- export BASHRC_VAR="Loaded from .bashrc"
+    alias brc_alias='echo "Alias from .bashrc"'
+    brc_func() { echo "Function from .bashrc"; }
+    export PROFILE_VAR="Loaded from .profile"
+    alias prof_alias='echo "Alias from .profile"'
+    prof_func() { echo "Function from .profile"; }
+    export ETC_PROFILE_VAR="Loaded from /etc/profile"
+    alias etc_prof_alias='echo "Alias from /etc/profile"'
+    etc_prof_func() { echo "Function from /etc/profile"; }
+    export ETC_BASHRC_VAR="Loaded from /etc/bash.bashrc"
+    alias etc_brc_alias='echo "Alias from /etc/bash.bashrc"'
+    etc_brc_func() { echo "Function from /etc/bash.bashrc"; }
+    su - username
+    env | grep VAR
+    alias
+    ssh username@localhost
+    env | grep VAR
+    alias
+    bash
+    env | grep VAR
+    alias
+    tmux
+    env | grep VAR
+    alias
+    echo 'echo $BASHRC_VAR $PROFILE_VAR' > test.sh
+    chmod +x test.sh
+    ./test.sh
+
+# groups_31
+1- groupadd tennis ; groupadd football ; groupadd sports
+2- usermod -a -G tennis,sports venus
+3- groupmod -n foot football
+4- vi /etc/group
+5- id # and after logoff logon serena should be member
+6- gpasswd -A # to make manager
+   gpasswd -a # to add member
+
+# standard_file_permissions_32
+1- mkdir ~/permissions ; touch ~/permissions/myfile.txt
+2- cp /etc/hosts ~/permissions/
+3- su -
+   touch /home/username/permissions/rootfile
+4- ls -l ~/permissions
+5- chown user ~/permissions/*
+6- chmod 644 # on files
+   chmod 755 # on directories
+11- umask ; umask -S
+    umask -S u=rwx,go=
+12- su -
+    # echo hello > /home/username/root.txt
+    # chmod 744 /home/username/root.txt
+    su - username
+    vi ~/root.txt
+13- echo hello > file ; chmod 744 file
+14- mkdir /home/project42 ; groupadd project42
+    chgrp project42 /home/project42 ; chmod 775 /home/project42
+
+# advanced_file_permissions_33
+1a- groupadd sports
+mkdir /home/sports
+chown root:sports /home/sports
+1b- chmod 770 /home/sports
+1c- chmod 2770 /home/sports
+1d- chmod +t /home/sports
+2- ls -l /usr/bin/passwd 
+   chmod 755 /usr/bin/passwd
+   ls -l /usr/bin/passwd
+3- sudo su -
+   mkdir attr
+   cd attr/
+   touch file42
+   lsattr
+   chattr +i file42
+   lsattr
+   rm -rf file42 
+   chattr -i file42
+   rm -rf file42
+
+# file_links_35
+1- echo cold > winter.txt ; echo hot > summer.txt
+2- ln winter.txt hlwinter.txt
+3- ls -li winter.txt summer.txt hlwinter.txt
+4- find . -inum xyz #replace xyz with the inode number
+6- ln -s summer.txt slsummer.txt
+8- ls -l /etc/init.d
+   ls -l /etc/rc2.d
+   ls -l /etc/rc3.d
+9- ls -l /lib
+10- find ~ ! -links 1 -type f
